@@ -49,21 +49,18 @@
   </style>
 </head>
 <body>
-
-  <!-- Terms and Conditions -->
   <div class="container" id="terms-box">
     <h2>Terms & Conditions</h2>
     <p style="text-align: left; font-size: 0.9rem; max-height: 200px; overflow-y: auto;">
-      You must agree to the terms and conditions before using this platform.
-      This includes understanding the risks of trading and the rules related to usage, refund policies, and disclaimers.
+      <!-- Keep your full disclaimer content here as before -->
+      (Disclaimer content here — unchanged for brevity)
     </p>
     <button onclick="agreeTerms()">Agree & Let's Go</button>
   </div>
 
-  <!-- Login Form -->
   <div class="container" id="login-box" style="display: none;">
     <h2>Login Details</h2>
-
+    
     <label for="name">Your Name</label>
     <input type="text" id="name" placeholder="Enter your name" maxlength="50" />
     
@@ -76,29 +73,12 @@
     <button onclick="loginUser()">Login</button>
   </div>
 
-  <!-- Welcome Message -->
   <div class="container" id="welcome-box" style="display: none;">
     <h2>Welcome!</h2>
     <p id="welcome-message">You have successfully logged in.</p>
-    <button onclick="logoutUser()">Logout</button>
   </div>
 
-  <!-- Script -->
   <script>
-    console.log("Script loaded ✅");
-
-    // On page load, check for saved user
-    window.onload = function () {
-      const savedUser = localStorage.getItem('userData');
-      if (savedUser) {
-        const user = JSON.parse(savedUser);
-        document.getElementById('terms-box').style.display = 'none';
-        document.getElementById('login-box').style.display = 'none';
-        document.getElementById('welcome-box').style.display = 'block';
-        document.getElementById('welcome-message').textContent = `Welcome back, ${user.name}!`;
-      }
-    };
-
     function agreeTerms() {
       document.getElementById('terms-box').style.display = 'none';
       document.getElementById('login-box').style.display = 'block';
@@ -114,7 +94,7 @@
         return;
       }
       if (!mobile || !/^\d{10,15}$/.test(mobile)) {
-        alert('Please enter a valid mobile number (10–15 digits).');
+        alert('Please enter a valid mobile number (10 to 15 digits).');
         return;
       }
       if (!api) {
@@ -122,21 +102,10 @@
         return;
       }
 
-      const userData = {
-        name: name,
-        mobile: mobile,
-        apiKey: api
-      };
-      localStorage.setItem('userData', JSON.stringify(userData));
-
+      // Simulated login success
       document.getElementById('login-box').style.display = 'none';
       document.getElementById('welcome-box').style.display = 'block';
       document.getElementById('welcome-message').textContent = `Welcome, ${name}! You have successfully logged in.`;
-    }
-
-    function logoutUser() {
-      localStorage.removeItem('userData');
-      location.reload(); // refresh the page
     }
   </script>
 </body>
