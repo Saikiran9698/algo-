@@ -1,55 +1,145 @@
-<script>
-  // Run this when page loads — check if user already logged in
-  window.onload = function () {
-    const savedUser = localStorage.getItem('userData');
-    if (savedUser) {
-      const user = JSON.parse(savedUser);
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Terms & Login</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 0;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      background-color: #f3f3f3;
+    }
+    .container {
+      background: white;
+      padding: 2rem;
+      border-radius: 10px;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+      max-width: 500px;
+      width: 100%;
+      text-align: center;
+    }
+    button {
+      padding: 0.6rem 1.2rem;
+      margin-top: 1rem;
+      background-color: #007bff;
+      color: white;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+    input {
+      padding: 0.5rem;
+      width: 100%;
+      margin-top: 1rem;
+      border-radius: 5px;
+      border: 1px solid #ccc;
+    }
+    label {
+      text-align: left;
+      display: block;
+      margin-top: 1rem;
+      font-size: 0.9rem;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Terms and Conditions -->
+  <div class="container" id="terms-box">
+    <h2>Terms & Conditions</h2>
+    <p style="text-align: left; font-size: 0.9rem; max-height: 200px; overflow-y: auto;">
+      You must agree to the terms and conditions before using this platform.
+      This includes understanding the risks of trading and the rules related to usage, refund policies, and disclaimers.
+    </p>
+    <button onclick="agreeTerms()">Agree & Let's Go</button>
+  </div>
+
+  <!-- Login Form -->
+  <div class="container" id="login-box" style="display: none;">
+    <h2>Login Details</h2>
+
+    <label for="name">Your Name</label>
+    <input type="text" id="name" placeholder="Enter your name" maxlength="50" />
+    
+    <label for="mobile">Mobile Number</label>
+    <input type="text" id="mobile" placeholder="Enter your mobile number" maxlength="15" />
+    
+    <label for="api">API Key</label>
+    <input type="text" id="api" placeholder="Enter your API key" maxlength="100" />
+
+    <button onclick="loginUser()">Login</button>
+  </div>
+
+  <!-- Welcome Message -->
+  <div class="container" id="welcome-box" style="display: none;">
+    <h2>Welcome!</h2>
+    <p id="welcome-message">You have successfully logged in.</p>
+    <button onclick="logoutUser()">Logout</button>
+  </div>
+
+  <!-- Script -->
+  <script>
+    console.log("Script loaded ✅");
+
+    // On page load, check for saved user
+    window.onload = function () {
+      const savedUser = localStorage.getItem('userData');
+      if (savedUser) {
+        const user = JSON.parse(savedUser);
+        document.getElementById('terms-box').style.display = 'none';
+        document.getElementById('login-box').style.display = 'none';
+        document.getElementById('welcome-box').style.display = 'block';
+        document.getElementById('welcome-message').textContent = `Welcome back, ${user.name}!`;
+      }
+    };
+
+    function agreeTerms() {
       document.getElementById('terms-box').style.display = 'none';
+      document.getElementById('login-box').style.display = 'block';
+    }
+
+    function loginUser() {
+      const name = document.getElementById('name').value.trim();
+      const mobile = document.getElementById('mobile').value.trim();
+      const api = document.getElementById('api').value.trim();
+
+      if (!name) {
+        alert('Please enter your name.');
+        return;
+      }
+      if (!mobile || !/^\d{10,15}$/.test(mobile)) {
+        alert('Please enter a valid mobile number (10–15 digits).');
+        return;
+      }
+      if (!api) {
+        alert('Please enter your API key.');
+        return;
+      }
+
+      const userData = {
+        name: name,
+        mobile: mobile,
+        apiKey: api
+      };
+      localStorage.setItem('userData', JSON.stringify(userData));
+
       document.getElementById('login-box').style.display = 'none';
       document.getElementById('welcome-box').style.display = 'block';
-      document.getElementById('welcome-message').textContent = `Welcome back, ${user.name}!`;
-    }
-  };
-
-  // When user clicks "Agree"
-  function agreeTerms() {
-    document.getElementById('terms-box').style.display = 'none';
-    document.getElementById('login-box').style.display = 'block';
-  }
-
-  // When user clicks "Login"
-  function loginUser() {
-    const name = document.getElementById('name').value.trim();
-    const mobile = document.getElementById('mobile').value.trim();
-    const api = document.getElementById('api').value.trim();
-
-    if (!name) {
-      alert('Please enter your name.');
-      return;
-    }
-    if (!mobile || !/^\d{10,15}$/.test(mobile)) {
-      alert('Please enter a valid mobile number (10–15 digits).');
-      return;
-    }
-    if (!api) {
-      alert('Please enter your API key.');
-      return;
+      document.getElementById('welcome-message').textContent = `Welcome, ${name}! You have successfully logged in.`;
     }
 
-    // Save the data to localStorage
-    const userData = {
-      name: name,
-      mobile: mobile,
-      apiKey: api
-    };
-    localStorage.setItem('userData', JSON.stringify(userData));
-
-    // Show welcome screen
-    document.getElementById('login-box').style.display = 'none';
-    document.getElementById('welcome-box').style.display = 'block';
-    document.getElementById('welcome-message').textContent = `Welcome, ${name}! You have successfully logged in.`;
-  }
-</script>
-
+    function logoutUser() {
+      localStorage.removeItem('userData');
+      location.reload(); // refresh the page
+    }
+  </script>
+</body>
+</html>
 
 
